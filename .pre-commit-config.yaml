@@ -13,7 +13,7 @@ repos:
     - id: isort
       name: isort
       entry: isort
-      files: ^(config/)
+      files: ^(config/|file/)
       language: system
       types: [python]
       args: ["--profile", "black", --line-length=120]
@@ -21,7 +21,7 @@ repos:
     - id: flake8
       name: flake8
       entry: flake8
-      files: ^(config/)
+      files: ^(config/|file/)
       language: system
       types: [python]
       args: [--config, setup.cfg]
