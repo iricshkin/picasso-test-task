@@ -9,8 +9,6 @@
 [![docker](https://img.shields.io/badge/-Docker-464646?style=flat-square&logo=docker)](https://www.docker.com/)
 [![Redis](https://img.shields.io/badge/-Redis-464646?style=flat&logo=Redis)](https://redis.io/)
 [![Celery](https://img.shields.io/badge/-Celery-464646?style=flat&logo=Celery)](https://docs.celeryq.dev/en/stable/)
-# TODO:
-- Написать тесты
 
 ### Стек
 - Python 3.11
@@ -31,6 +29,10 @@ docker-compose up -d --build
 ```
 
 После запуска проекта, подробную инструкцию можно будет посмотреть по адресу http://0.0.0.0:8000/redoc/ или http://0.0.0.0:8000/swagger/
+
+### Тестирование
+
+В корневом каталоге выполните команду `pytest`.
 
 ### Об авторе
 
