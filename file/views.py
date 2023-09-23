@@ -15,7 +15,6 @@ from .serializers import FileSerializer
     decorator=swagger_auto_schema(
         operation_description="Загрузка файла",
         responses={
-            status.HTTP_204_NO_CONTENT: error_responses[status.HTTP_204_NO_CONTENT],
             status.HTTP_400_BAD_REQUEST: error_responses[status.HTTP_400_BAD_REQUEST],
             status.HTTP_500_INTERNAL_SERVER_ERROR: error_responses[
                 status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -39,11 +38,15 @@ from .serializers import FileSerializer
 class UploadFileView(CreateModelMixin, ListModelMixin, GenericViewSet):
     queryset = File.objects.all().order_by("-id")
     serializer_class = FileSerializer
+    http_method_names = ["get", "post"]
 
     parser_classes = (MultiPartParser,)
 
-    def create(self, request, **kwargs):
-        return super().create(request, **kwargs)
-
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
+    @swagger_auto_schema(
+        operation_description="Загрузка файла",
+        responses={
+            status.HTTP_404_NOT_FOUND: error_responses[status.HTTP_404_NOT_FOUND],
+            status.HTTP_500_INTERNAL_SERVER_ERROR: error_responses[status.HTTP_500_INTERNAL_SERVER_ERROR]
+        })
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)

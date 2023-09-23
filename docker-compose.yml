@@ -1,0 +1,60 @@
+version: "3.9"
+
+networks:
+  picasso_network:
+
+services:
+  web:
+    build: .
+    container_name: picasso_web
+    command: >
+      bash -c "sleep 5 &&
+      python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./app/:/usr/src/app/
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - picasso_network
+    restart: on-failure
+
+  db:
+    image: postgres:15
+    container_name: picasso_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - picasso_network
+    env_file:
+      - .env
+    restart: on-failure
+
+  redis:
+    image: "redis:alpine"
+    container_name: picasso_redis
+    restart: always
+    networks:
+      - picasso_network
+
+  celery:
+    build: .
+    container_name: picasso_celery
+    restart: on-failure
+    command: bash -c "sleep 5 && python -m celery -A config worker -l info"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - web
+    networks:
+      - picasso_network
+
+volumes:
+  postgres_data:
+    name: postgres_data
