@@ -12,6 +12,6 @@ WORKDIR /app
 RUN apt -y update \
     && pip install --upgrade pip \
     && pip install --no-cache-dir "poetry==$POETRY_VERSION" \
-    && poetry install  --no-root
+    && poetry install --no-root
 
 COPY . /app
